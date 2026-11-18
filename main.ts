@@ -33,16 +33,18 @@ for (const [bar, side, tr] of SCHEDULE) {
   else schedByBar.set(bar, [[side, tr]]);
 }
 
-// Race-mode parameters (dip-buy; best of the sweep on the dev window:
-// PnL -$1.62, 14 trades, max DD 2.23% -- least-bad genuine strategy there).
+// Race-mode parameters (dip-buy; swept on the dev window in race mode:
+// PnL +$11.52, 6 trades, max DD 1.80% -- entry needs a deeper 30-bar dip
+// (-0.70%) and the hard stop is wider (-2.00%) so dips can recover instead
+// of stopping out at the bottom of a choppy downtrend).
 const RACE = {
   lowWin: 30, // entry: close within 0.15% of the 30-bar low ...
-  lowTolBps: 15, // ... and 30-bar return <= -0.30%
-  r30Bps: -30,
+  lowTolBps: 15, // ... and 30-bar return <= -0.70%
+  r30Bps: -70,
   endGuard: 1320, // no new entries after bar 1320
   armBps: 40, // trailing arms once gain >= +0.40% ...
   trailBps: 20, // ... then sells if price falls 0.20% from its peak
-  slBps: 120, // hard stop -1.20% from break-even
+  slBps: 200, // hard stop -2.00% from break-even
   momBps: 30, // momentum exit: gain >= +0.30% and 5-bar return <= -0.30%
   strengthBps: 80, // sell into strength: 15-bar return >= +0.80%
   maxHold: 360, // max hold 360 bars
